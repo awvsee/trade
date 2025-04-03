@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRO Crypto & Mines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: #0a0e17;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        .content {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* Main Menu Styles */
+        .main-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; /* Even spacing */
+            align-content: center; /* Centered vertically, adjusted downward */
+            justify-items: center;
+            height: 100vh;
+            background: #0a0e17;
+            padding: 15px; /* Uniform padding */
+            box-sizing: border-box;
+        }
+
+        .game-btn {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #1e3a8a, #06b6d4); /* Sharp gradient */
+            color: white;
+            border: 2px solid #ffffff20; /* Subtle border */
+            border-radius: 12px;
+            font-size: 18px; /* Larger, bold text */
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase; /* Bold, standout text */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); /* Sharp text */
+        }
+
+        .game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(6, 182, 212, 0.5);
+            background: linear-gradient(135deg, #06b6d4, #1e3a8a);
+            border-color: #ffffff40;
+        }
+
+        /* Small Back Button Styles */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background: #1f2a3e;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #2a3552 0%, #3b4866 100%);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* MINES Original Styles */
+        .mines-body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('https://i.ibb.co/fBxPhpX/image.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .grid-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin-bottom: 30px;
+        }
+
+        .grid-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #181D28;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .grid {
+            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            width: 290px;
+            height: 290px;
+            padding: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cell {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            background: #05A3FE;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .cell.revealed {
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            animation: starPop 0.5s ease-out;
+            display: none;
+        }
+
+        @keyframes starPop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+            width: 320px;
+        }
+
+        .number-selector {
+            display: flex;
+            align-items: center;
+            background: #181D28;
+            border-radius: 25px;
+            padding: 15px;
+            gap: 15px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        .number-btn {
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0 10px;
+            color: white;
+            font-weight: 800;
+            user-select: none;
+            flex: 0 0 auto;
+        }
+
+        .number-display {
+            background: white;
+            color: #181D28;
+            padding: 8px 20px;
+            border-radius: 10px;
+            min-width: 60px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 20px;
+            flex: 1;
+        }
+
+        .get-signal-btn {
+            background: #05A3FE;
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 25px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 800;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .get-signal-btn:hover {
+            transform: scale(1.05);
+            background: #0489d4;
+        }
+
+        /* TRADING Original Styles */
+        .trading-body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: #0a0e17;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            height: 400px;
+            margin: 20px 0;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #1f2a3e;
+            overflow: hidden;
+            transition: opacity 0.5s;
+            background: #0a0e17;
+        }
+
+        .candle {
+            position: absolute;
+            width: 14px;
+            border-radius: 2px;
+            bottom: 0;
+            opacity: 0;
+            transform-origin: bottom;
+            box-shadow: 0 0 8px currentColor;
+            z-index: 1;
+        }
+
+        .candle-up {
+            background: #00c853;
+            border: 1px solid #00c853;
+            color: rgba(0, 200, 83, 0.3);
+        }
+
+        .candle-down {
+            background: #d50000;
+            border: 1px solid #d50000;
+            color: rgba(213, 0, 0, 0.3);
+        }
+
+        .wick {
+            position: absolute;
+            width: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .result {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0;
+            font-weight: 800;
+            opacity: 0;
+            transition: all 0.5s;
+            text-shadow: 0 0 25px currentColor;
+            pointer-events: none;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .show-result {
+            font-size: 72px;
+            opacity: 1;
+        }
+
+        .result-up {
+            color: #00c853;
+            text-shadow: 0 0 25px rgba(0, 200, 83, 0.7);
+        }
+
+        .result-down {
+            color: #d50000;
+            text-shadow: 0 0 25px rgba(213, 0, 0, 0.7);
+        }
+
+        .hide-chart {
+            opacity: 0;
+        }
+
+        .trading-controls {
+            margin: 15px 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .crypto-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        select#cryptoPair {
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            background: linear-gradient(135deg, #1f2a3e 0%, #2a3552 100%);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        select#cryptoPair:hover {
+            background: linear-gradient(135deg, #2a3552 0%, #3b4866 100%);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        select#cryptoPair:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(41, 98, 255, 0.5);
+            border-radius: 25px 25px 0 0;
+        }
+
+        select#cryptoPair::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        select#cryptoPair::-webkit-scrollbar-thumb {
+            background: #2962FF;
+            border-radius: 4px;
+        }
+
+        select#cryptoPair option {
+            background: #1f2a3e;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            transition: background 0.2s ease;
+        }
+
+        select#cryptoPair option:hover,
+        select#cryptoPair option:focus,
+        select#cryptoPair option:checked {
+            background: linear-gradient(135deg, #2962FF 0%, #00c853 100%);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(41, 98, 255, 0.5);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #00c853;
+            pointer-events: none;
+        }
+
+        .generate-signal-btn {
+            padding: 16px 50px;
+            background: linear-gradient(to right, #2962FF, #00c853);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 25px rgba(41, 98, 255, 0.4);
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .generate-signal-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #00c853, #2962FF);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .generate-signal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(41, 98, 255, 0.6);
+        }
+
+        .generate-signal-btn:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes candleRise {
+            0% { transform: scaleY(0); opacity: 0; }
+            60% { transform: scaleY(1.2); }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
+        .pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 0;
+            opacity: 0;
+        }
+
+        .pulse-up {
+            background: radial-gradient(circle, rgba(0,200,83,0.2) 0%, rgba(0,200,83,0) 70%);
+        }
+
+        .pulse-down {
+            background: radial-gradient(circle, rgba(213,0,0,0.2) 0%, rgba(213,0,0,0) 70%);
+        }
+
+        .show-pulse {
+            animation: pulse 2s forwards;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+        }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 400px) {
+            .game-btn {
+                width: 120px;
+                height: 120px;
+                font-size: 16px; /* Slightly smaller but still bold */
+            }
+            .main-menu {
+                gap: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Menu Content -->
+    <div id="main-menu" class="content active">
+        <div class="main-menu">
+            <button class="game-btn" data-tab="mines">Play Mines</button>
+            <button class="game-btn" data-tab="trading">Play Trading</button>
+            <button class="game-btn" data-tab="aviator">Play Aviator</button>
+            <button class="game-btn" data-tab="bombucks">Play Bombucks</button>
+        </div>
+    </div>
+
+    <!-- MINES Content -->
+    <div id="mines" class="content">
+        <button class="back-btn" data-tab="main-menu">⬅</button>
+        <div class="mines-body">
+            <div class="grid-container">
+                <div class="grid-background"></div>
+                <div class="grid" id="grid"></div>
+            </div>
+            <div class="controls">
+                <div class="number-selector">
+                    <span class="number-btn" id="decrease">-</span>
+                    <span class="number-display" id="counter">3</span>
+                    <span class="number-btn" id="increase">+</span>
+                </div>
+                <button class="get-signal-btn" id="getSignal">GET SIGNAL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRADING Content -->
+    <div id="trading" class="content">
+        <button class="back-btn" data-tab="main-menu">⬅</button>
+        <div class="trading-body">
+            <div class="chart-wrapper">
+                <div class="chart-container" id="chart"></div>
+                <div class="result" id="result"></div>
+                <div class="pulse" id="pulse"></div>
+            </div>
+            <div class="trading-controls">
+                <div class="crypto-select-wrapper">
+                    <select id="cryptoPair">
+                        <option value="BTC/USD">BTC/USD</option>
+                        <option value="ETH/USD">ETH/USD</option>
+                        <option value="XRP/USD">XRP/USD</option>
+                        <option value="LTC/USD">LTC/USD</option>
+                        <option value="BNB/USD">BNB/USD</option>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
+            <button class="generate-signal-btn" onclick="startAnimation()">Generate Signal</button>
+        </div>
+    </div>
+
+    <!-- AVIATOR Content -->
+    <div id="aviator" class="content">
+        <button class="back-btn" data-tab="main-menu">⬅</button>
+        <p>Content for AVIATOR goes here.</p>
+    </div>
+
+    <!-- BOMBUCKS Content -->
+    <div id="bombucks" class="content">
+        <button class="back-btn" data-tab="main-menu">⬅</button>
+        <p>Content for BOMBUCKS goes here.</p>
+    </div>
+
+    <script>
+        // Tab switching logic with reset
+        const contents = document.querySelectorAll('.content');
+        const gameButtons = document.querySelectorAll('.game-btn');
+        const backButtons = document.querySelectorAll('.back-btn');
+
+        function resetMines() {
+            const allStars = document.querySelectorAll('.star');
+            const allCells = document.querySelectorAll('.cell');
+            allStars.forEach(star => star.style.display = 'none');
+            allCells.forEach(cell => cell.classList.remove('revealed'));
+            document.getElementById('counter').textContent = '3';
+            currentCount = 3;
+        }
+
+        function resetTrading() {
+            const chart = document.getElementById('chart');
+            const result = document.getElementById('result');
+            const pulse = document.getElementById('pulse');
+            chart.innerHTML = '';
+            result.className = 'result';
+            pulse.className = 'pulse';
+            chart.classList.remove('hide-chart');
+            document.getElementById('particles').innerHTML = '';
+        }
+
+        function switchTab(tabId) {
+            contents.forEach(c => c.classList.remove('active'));
+            if (tabId === 'main-menu') {
+                resetMines();
+                resetTrading();
+            }
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        gameButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                switchTab(button.dataset.tab);
+            });
+        });
+
+        backButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                switchTab(button.dataset.tab);
+            });
+        });
+
+        // Mines Logic
+        let currentCount = 3;
+        const counterElement = document.getElementById('counter');
+        const stars = Array.from({length: 25}, () => {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            const star = document.createElement('img');
+            star.className = 'star';
+            star.src = 'https://i.ibb.co/Fk9cRLPR/zvezda.png';
+            cell.appendChild(star);
+            return cell;
+        });
+
+        document.getElementById('grid').append(...stars);
+
+        document.getElementById('increase').addEventListener('click', () => {
+            currentCount = Math.min(currentCount + 2, 25);
+            updateCounter();
+        });
+
+        document.getElementById('decrease').addEventListener('click', () => {
+            currentCount = Math.max(currentCount - 2, 1);
+            updateCounter();
+        });
+
+        function updateCounter() {
+            counterElement.textContent = currentCount;
+        }
+
+        document.getElementById('getSignal').addEventListener('click', async () => {
+            const allStars = document.querySelectorAll('.star');
+            const allCells = document.querySelectorAll('.cell');
+            
+            allStars.forEach(star => star.style.display = 'none');
+            allCells.forEach(cell => cell.classList.remove('revealed'));
+
+            const positions = new Set();
+            while(positions.size < 5) {
+                const randomPos = Math.floor(Math.random() * 25);
+                positions.add(randomPos);
+            }
+
+            for (const pos of positions) {
+                await new Promise(resolve => setTimeout(resolve, 300));
+                allStars[pos].style.display = 'block';
+                allCells[pos].classList.add('revealed');
+            }
+        });
+
+        // Trading Logic
+        async function startAnimation() {
+            const chart = document.getElementById('chart');
+            const result = document.getElementById('result');
+            const pulse = document.getElementById('pulse');
+            const particles = document.getElementById('particles');
+            
+            chart.innerHTML = '';
+            result.className = 'result';
+            pulse.className = 'pulse';
+            chart.classList.remove('hide-chart');
+            particles.innerHTML = '';
+
+            const candleCount = 12;
+            const containerHeight = chart.offsetHeight;
+            const minPosition = containerHeight * 0.15;
+            const maxPosition = containerHeight * 0.85;
+            const minHeight = containerHeight * 0.05;
+            const maxHeight = containerHeight * 0.20;
+            let currentOpen = minPosition;
+            let currentClose;
+
+            const candles = [];
+            for(let i = 0; i < 4; i++) {
+                const height = minHeight + Math.random() * (maxHeight - minHeight);
+                currentClose = Math.min(maxPosition - height, currentOpen + height);
+                
+                candles.push({
+                    height: Math.abs(currentClose - currentOpen),
+                    isUp: true,
+                    position: currentOpen,
+                    topWick: Math.min(20 + Math.random() * 30, maxPosition - (currentClose + height)),
+                    bottomWick: 15 + Math.random() * 20,
+                    xPos: 20 + i * 24
+                });
+                currentOpen = currentClose;
+            }
+
+            for(let i = 4; i < 8; i++) {
+                const height = minHeight + Math.random() * (maxHeight - minHeight);
+                const isUp = Math.random() > 0.5;
+                currentClose = isUp
+                    ? Math.min(maxPosition - height, currentOpen + height * 1.2)
+                    : Math.max(minPosition, currentOpen - height * 1.2);
+                
+                candles.push({
+                    height: Math.abs(currentClose - currentOpen),
+                    isUp: isUp,
+                    position: Math.min(currentOpen, currentClose),
+                    topWick: Math.min(20 + Math.random() * 30, maxPosition - Math.max(currentOpen, currentClose)),
+                    bottomWick: Math.min(15 + Math.random() * 20, Math.min(currentOpen, currentClose) - minPosition),
+                    xPos: 20 + i * 24
+                });
+                currentOpen = currentClose;
+            }
+
+            const finalDirection = Math.random() > 0.5;
+            for(let i = 8; i < candleCount; i++) {
+                const height = minHeight + Math.random() * (maxHeight - minHeight) * (i === 11 ? 1.3 : 1);
+                currentClose = finalDirection
+                    ? Math.min(maxPosition - height, currentOpen + height * 1.5)
+                    : Math.max(minPosition, currentOpen - height * 1.5);
+                
+                candles.push({
+                    height: Math.abs(currentClose - currentOpen),
+                    isUp: finalDirection,
+                    position: Math.min(currentOpen, currentClose),
+                    topWick: Math.min(25 + Math.random() * 35, maxPosition - Math.max(currentOpen, currentClose)),
+                    bottomWick: Math.min(20 + Math.random() * 25, Math.min(currentOpen, currentClose) - minPosition),
+                    xPos: 20 + i * 24
+                });
+                currentOpen = currentClose;
+            }
+
+            const isFinalUp = finalDirection;
+
+            for(const [index, candle] of candles.entries()) {
+                const candleElement = createCandle(candle);
+                chart.appendChild(candleElement);
+                await animateCandle(candleElement, index);
+            }
+
+            setTimeout(() => {
+                chart.classList.add('hide-chart');
+                result.textContent = isFinalUp ? 'UP' : 'DOWN';
+                result.classList.add(isFinalUp ? 'result-up' : 'result-down');
+                result.classList.add('show-result');
+                
+                pulse.classList.add(isFinalUp ? 'pulse-up' : 'pulse-down');
+                pulse.classList.add('show-pulse');
+                
+                createParticles(isFinalUp);
+            }, 500);
+        }
+
+        function createCandle(candle) {
+            const element = document.createElement('div');
+            element.className = `candle ${candle.isUp ? 'candle-up' : 'candle-down'}`;
+            element.style.height = `${candle.height}px`;
+            element.style.bottom = `${candle.position}px`;
+            element.style.left = `${candle.xPos}px`;
+
+            const topWick = document.createElement('div');
+            topWick.className = 'wick';
+            topWick.style.height = `${candle.topWick}px`;
+            topWick.style.bottom = '100%';
+            topWick.style.background = candle.isUp ? '#00c853' : '#d50000';
+
+            const bottomWick = document.createElement('div');
+            bottomWick.className = 'wick';
+            bottomWick.style.height = `${candle.bottomWick}px`;
+            bottomWick.style.top = '100%';
+            bottomWick.style.background = candle.isUp ? '#00c853' : '#d50000';
+
+            element.appendChild(topWick);
+            element.appendChild(bottomWick);
+            
+            return element;
+        }
+
+        function createParticles(isUp) {
+            const particles = document.getElementById('particles');
+            const color = isUp ? '#00c853' : '#d50000';
+            
+            for(let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = `${Math.random() * 6 + 2}px`;
+                particle.style.height = particle.style.width;
+                particle.style.background = color;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.opacity = '0';
+                
+                particles.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.style.transition = `all ${Math.random() * 2 + 1}s ease-out`;
+                    particle.style.opacity = '0.6';
+                    particle.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)`;
+                    
+                    setTimeout(() => {
+                        particle.style.opacity = '0';
+                    }, 1000);
+                }, Math.random() * 500);
+            }
+        }
+
+        async function animateCandle(element, index) {
+            return new Promise(resolve => {
+                element.style.animation = `candleRise 0.3s ${index * 0.08}s forwards`;
+                setTimeout(resolve, 80);
+            });
+        }
+    </script>
+</body>
+</html>

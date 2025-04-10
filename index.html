@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOXWIN - Crypto & Mines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: #0D1223;
+            font-family: 'Rubik', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .content {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* Main Menu Design */
+        .main-menu-container {
+            height: 100vh;
+            background: linear-gradient(135deg, #0D1223, #1a1e2a);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-menu-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-menu-logo {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .main-menu-title {
+            font-size: 50px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            letter-spacing: 4px;
+            margin-top: 10px;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .menu-games {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .menu-btn {
+            position: relative;
+            width: 100%;
+            height: 110px;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            border-radius: 15px;
+            font-size: 22px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-btn span {
+            position: relative;
+            z-index: 1;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            display: block;
+            padding: 8px 12px;
+            max-width: 90%;
+            letter-spacing: 2px;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+        }
+
+        .menu-btn:hover img {
+            opacity: 0.9;
+        }
+
+        .menu-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.8) 80%);
+            z-index: 1;
+            pointer-events: none;
+            animation: pulse 10s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .menu-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        /* Mines Styles */
+        .mines-body {
+            height: 100vh;
+            background: #0D1223;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rubik', sans-serif;
+            position: relative;
+        }
+
+        .mines-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(11, 17, 31, 0.9) 80%);
+            z-index: 0;
+            pointer-events: none;
+            animation: pulse 10s infinite alternate;
+        }
+
+        .grid-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin-bottom: 20px;
+            z-index: 1;
+            background: url('https://i.ibb.co/wrgqbKcc/fon.png') no-repeat center center;
+            background-size: cover;
+            border-radius: 30px;
+            box-sizing: border-box;
+        }
+
+        .grid {
+            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            width: 290px;
+            height: 290px;
+            padding: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateX(2px);
+        }
+
+        .cell:nth-child(odd) {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            background: url('https://i.ibb.co/4Zxv2KMT/perv.png') no-repeat center center;
+            background-size: cover;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .cell:nth-child(even) {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            background: url('https://i.ibb.co/yc5pX3JB/vtr.png') no-repeat center center;
+            background-size: cover;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .cell.revealed {
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 36px;
+            height: 36px;
+            opacity: 0;
+            display: none;
+            animation: starAppear 0.6s ease-out forwards;
+        }
+
+        @keyframes starAppear {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            width: 320px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .number-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #0A0F1D;
+            border-radius: 20px;
+            padding: 10px;
+            gap: 5px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .number-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .number-btn {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0 10px;
+            color: white;
+            font-family: 'Rubik', sans-serif;
+            user-select: none;
+        }
+
+        .number-display {
+            color: #ffffff;
+            padding: 6px 15px;
+            border-radius: 8px;
+            min-width: 50px;
+            text-align: center;
+            font-size: 20px;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .traps-text {
+            font-size: 12px;
+            color: #b0b8d1;
+            letter-spacing: 1px;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .get-signal-btn {
+            background: #2151C1;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(33, 81, 193, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Rubik', sans-serif;
+            width: 100%;
+            box-sizing: border-box;
+            letter-spacing: 1px;
+        }
+
+        .get-signal-btn:hover {
+            background: #2a67e5;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(33, 81, 193, 0.6);
+        }
+
+        .back-signal-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(255, 68, 68, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Rubik', sans-serif;
+            width: 100%;
+            max-width: 120px;
+            box-sizing: border-box;
+            letter-spacing: 1px;
+        }
+
+        .back-signal-btn:hover {
+            background: #ff6666;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(255, 68, 68, 0.6);
+        }
+
+        /* Aviator Styles */
+        .aviator-body {
+            height: 100vh;
+            background: #2b0000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .aviator-container {
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .aviator-title {
+            font-size: 36px;
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.7);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .coefficient-circle {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 15px;
+            background: #1a0000;
+            border: 3px solid #ff4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+        }
+
+        .coefficient {
+            font-size: 50px;
+            color: #ff4444;
+            text-shadow: 0 0 15px rgba(255, 68, 68, 0.7);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            letter-spacing: 2px;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .signal-btn {
+            padding: 12px 40px;
+            background: linear-gradient(to right, #ff4444, #ff6666);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4);
+            width: 100%;
+            max-width: 260px;
+            margin: 8px 0;
+            font-family: 'Rubik', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .signal-btn:hover {
+            background: linear-gradient(to right, #ff6666, #ff8888);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 68, 68, 0.6);
+        }
+
+        .signal-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Bombucks Styles */
+        .bombucks-body {
+            height: 100vh;
+            background: #1D1E23; /* Обновил фон на #1D1E23 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .bombucks-grid-container {
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bombucks-grid-background {
+            position: absolute;
+            background: #1D1E23;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            top: 0;
+            left: 0;
+        }
+
+        .bombucks-grid {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+            padding: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bombucks-cell {
+            position: relative;
+            width: 90px;
+            height: 107px;
+            background: url('https://i.ibb.co/6cQvxhFf/image.png') no-repeat center center;
+            background-size: cover;
+            border: none;
+            box-shadow: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .bombucks-cell.highlighted {
+            background: url('https://i.ibb.co/6cQvxhFf/image.png') no-repeat center center;
+            background-size: cover;
+            transform: scale(1.05);
+        }
+
+        .bombucks-cell .oval {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 90px;
+            height: 77px;
+            background: url('https://i.ibb.co/27QxBTkc/image.png') no-repeat center center; /* Новая картинка */
+            background-size: cover;
+            border: none;
+            box-shadow: none;
+            border-radius: 10px;
+            transform: translateX(-50%);
+            display: none;
+            animation: ovalReveal 0.5s ease-out;
+        }
+
+        .bombucks-cell.highlighted .oval {
+            display: block;
+        }
+
+        @keyframes ovalReveal {
+            0% { transform: translateX(-50%) scale(0); opacity: 0; }
+            70% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        }
+
+        .bombucks-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            width: 280px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .crypto-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        select#fieldSize {
+            width: 100%;
+            padding: 10px 35px 10px 15px;
+            background: linear-gradient(135deg, #1a1e2a 0%, #2a3552 100%);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 18px;
+            font-family: 'Rubik', sans-serif;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            letter-spacing: 2px;
+        }
+
+        select#fieldSize:hover {
+            background: linear-gradient(135deg, #2a3552 0%, #3b4866 100%);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        select#fieldSize option {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Rubik', sans-serif;
+            font-size: 18px;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid #00c853;
+            pointer-events: none;
+        }
+
+        .bombucks-play-btn {
+            padding: 14px 40px;
+            background: #16151A; /* Новый цвет кнопки */
+            border: 2px solid #222328; /* Обводка */
+            color: white;
+            border-radius: 20px; /* Сравнял с радиусом кнопки выбора рядов */
+            cursor: pointer;
+            font-size: 18px; /* Сравнял с размером шрифта кнопки выбора рядов */
+            font-family: 'Rubik', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Сравнял тень с кнопкой выбора рядов */
+            width: 100%; /* Сравнял ширину */
+            letter-spacing: 2px;
+        }
+
+        .bombucks-play-btn:hover {
+            background: #222328; /* Чуть светлее при наведении */
+            transform: translateY(-2px); /* Сравнял эффект с кнопкой выбора рядов */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Football X Styles */
+        .footballx-body {
+            height: 100vh;
+            background: url('https://i.ibb.co/MybK7q64/i-Phone-16-2.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rubik', sans-serif;
+            position: relative;
+        }
+
+        .footballx-container {
+            width: 100%;
+            max-width: 460px;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .goal {
+            position: relative;
+            width: 360px;
+            height: 300px;
+            margin: 0 auto 15px;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        .goal-targets {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+            padding: 160px 10px 20px 10px;
+            box-sizing: border-box;
+        }
+
+        .target-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .target {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            background: url('https://i.ibb.co/0jV52LPv/750102-200-1.png') no-repeat center center;
+            background-size: cover;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+
+        .target.active {
+            background: url('https://i.ibb.co/0jV52LPv/750102-200-1.png') no-repeat center center;
+            background-size: cover;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            filter: hue-rotate(120deg);
+            animation: glowRed 0.5s ease-in-out;
+        }
+
+        @keyframes glowRed {
+            0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 1); }
+            100% { box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); }
+        }
+
+        .coefficients {
+            display: flex;
+            justify-content: space-between;
+            width: 360px;
+            margin: 10px auto;
+            font-size: 22px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
+        .coefficient {
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .coefficient.active {
+            background: #ff4444;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+        }
+
+        .footballx-kick-btn {
+            padding: 12px 40px;
+            background: linear-gradient(to right, #ff4444, #ff6666);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4);
+            width: 100%;
+            max-width: 260px;
+            font-family: 'Rubik', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .footballx-kick-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 68, 68, 0.6);
+        }
+
+        .footballx-kick-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Menu Content -->
+    <div id="main-menu" class="content active">
+        <div class="main-menu-container">
+            <div class="menu-background"></div>
+            <div class="menu-particles" id="particles"></div>
+            <div class="main-menu-header">
+                <img src="https://i.ibb.co/MDKGQX2c/card-2025-04-03-T145434-941.png" alt="NOXWIN Logo" class="main-menu-logo">
+                <h1 class="main-menu-title">NOXWIN</h1>
+            </div>
+            <div class="main-menu">
+                <div class="menu-games">
+                    <button class="menu-btn" data-tab="mines">
+                        <img src="https://i.ibb.co/GQggzxh5/mines-1win-logo.webp" alt="Mines">
+                        <span>Mines</span>
+                    </button>
+                    <button class="menu-btn" data-tab="aviator">
+                        <img src="https://i.ibb.co/RGM18DnY/Picture1.png" alt="Aviator">
+                        <span>Aviator</span>
+                    </button>
+                    <button class="menu-btn" data-tab="bombucks">
+                        <img src="https://i.ibb.co/LXtLdVzW/800x450.webp" alt="Bombucks">
+                        <span>Bombucks</span>
+                    </button>
+                    <button class="menu-btn" data-tab="footballx">
+                        <img src="https://i.ibb.co/MDsxhstp/image.png" alt="Football X">
+                        <span>Football X Kick</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mines Content -->
+    <div id="mines" class="content">
+        <div class="mines-body">
+            <div class="mines-background"></div>
+            <div class="grid-container">
+                <div class="grid" id="grid"></div>
+            </div>
+            <div class="controls">
+                <div class="number-selector">
+                    <div class="number-controls">
+                        <span class="number-btn" id="decrease"><</span>
+                        <span class="number-display" id="counter">1</span>
+                        <span class="number-btn" id="increase">></span>
+                    </div>
+                    <span class="traps-text">Traps</span>
+                </div>
+                <button class="get-signal-btn" id="getSignal">Get Signal</button>
+                <button class="back-signal-btn" id="backSignal" data-tab="main-menu">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aviator Content -->
+    <div id="aviator" class="content">
+        <div class="aviator-body">
+            <div class="aviator-container">
+                <h2 class="aviator-title">Aviator</h2>
+                <div class="coefficient-circle">
+                    <div class="coefficient" id="coefficient"></div>
+                </div>
+                <button class="signal-btn" id="signalBtn">Signal</button>
+                <button class="back-signal-btn" id="aviatorBackBtn" data-tab="main-menu">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bombucks Content -->
+    <div id="bombucks" class="content">
+        <div class="bombucks-body">
+            <div class="bombucks-grid-container" id="bombucksGridContainer">
+                <div class="bombucks-grid-background" id="bombucksGridBackground"></div>
+                <div class="bombucks-grid" id="bombucksGrid"></div>
+            </div>
+            <div class="bombucks-controls">
+                <div class="crypto-select-wrapper">
+                    <select id="fieldSize">
+                        <option value="3x2">3x2</option>
+                        <option value="6x3">6x3</option>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+                <button class="bombucks-play-btn" id="bombucksPlay">Play</button>
+                <button class="back-signal-btn" id="bombucksBackBtn" data-tab="main-menu">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Football X Content -->
+    <div id="footballx" class="content">
+        <div class="footballx-body">
+            <div class="footballx-container">
+                <div class="goal">
+                    <div class="goal-targets" id="goalTargets">
+                        <div class="target-row">
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                        </div>
+                        <div class="target-row">
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                        </div>
+                        <div class="target-row">
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                            <div class="target"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="coefficients" id="coefficients">
+                    <span class="coefficient" data-value="2">x2</span>
+                    <span class="coefficient" data-value="4">x4</span>
+                    <span class="coefficient" data-value="12">x12</span>
+                    <span class="coefficient" data-value="20">x20</span>
+                    <span class="coefficient" data-value="32">x32</span>
+                </div>
+                <button class="footballx-kick-btn" id="kickBtn">Kick!</button>
+                <button class="back-signal-btn" id="footballxBackBtn" data-tab="main-menu">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching Logic with Reset
+        const contents = document.querySelectorAll('.content');
+        const menuButtons = document.querySelectorAll('.menu-btn');
+        const backSignalButton = document.getElementById('backSignal');
+        const aviatorBackButton = document.getElementById('aviatorBackBtn');
+        const bombucksBackButton = document.getElementById('bombucksBackBtn');
+        const footballxBackButton = document.getElementById('footballxBackBtn');
+
+        let kickCount = 0;
+
+        function resetMines() {
+            const allStars = document.querySelectorAll('.star');
+            const allCells = document.querySelectorAll('.cell');
+            allStars.forEach(star => {
+                star.style.display = 'none';
+                star.style.opacity = '0';
+            });
+            allCells.forEach(cell => cell.classList.remove('revealed'));
+            document.getElementById('counter').textContent = '1';
+            currentCount = 1;
+            const getSignalBtn = document.getElementById('getSignal');
+            getSignalBtn.style.display = 'block';
+            getSignalBtn.disabled = false;
+        }
+
+        function resetAviator() {
+            const coefficient = document.getElementById('coefficient');
+            const signalBtn = document.getElementById('signalBtn');
+            coefficient.textContent = '';
+            coefficient.style.opacity = '0';
+            signalBtn.disabled = false;
+        }
+
+        function resetBombucks() {
+            const allCells = document.querySelectorAll('.bombucks-cell');
+            allCells.forEach(cell => {
+                cell.classList.remove('highlighted');
+                const oval = cell.querySelector('.oval');
+                if (oval) oval.style.display = 'none';
+            });
+            currentStep = 0;
+            const playBtn = document.getElementById('bombucksPlay');
+            playBtn.style.display = 'block';
+            playBtn.disabled = false;
+        }
+
+        function resetFootballX() {
+            const targets = document.querySelectorAll('.target');
+            const coefficients = document.querySelectorAll('.coefficient');
+            targets.forEach(target => target.classList.remove('active'));
+            coefficients.forEach(coef => coef.classList.remove('active'));
+            const kickBtn = document.getElementById('kickBtn');
+            kickBtn.disabled = false;
+            kickCount = 0;
+        }
+
+        function switchTab(tabId) {
+            contents.forEach(c => c.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (tabId === 'main-menu') {
+                resetMines();
+                resetAviator();
+                resetBombucks();
+                resetFootballX();
+            }
+            if (tabId === 'bombucks') updateBombucksGrid();
+            if (tabId === 'aviator') resetAviator();
+            if (tabId === 'footballx') resetFootballX();
+        }
+
+        menuButtons.forEach(button => button.addEventListener('click', () => switchTab(button.dataset.tab)));
+        backSignalButton.addEventListener('click', () => switchTab('main-menu'));
+        aviatorBackButton.addEventListener('click', () => switchTab('main-menu'));
+        bombucksBackButton.addEventListener('click', () => switchTab('main-menu'));
+        footballxBackButton.addEventListener('click', () => switchTab('main-menu'));
+
+        // Mines Logic
+        let currentCount = 1;
+        const counterElement = document.getElementById('counter');
+        const stars = Array.from({length: 25}, () => {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            const star = document.createElement('img');
+            star.className = 'star';
+            star.src = 'https://i.ibb.co/6JJRQcwH/342342423.png';
+            cell.appendChild(star);
+            return cell;
+        });
+
+        document.getElementById('grid').append(...stars);
+
+        document.getElementById('increase').addEventListener('click', () => {
+            currentCount = Math.min(currentCount + 2, 7);
+            updateCounter();
+        });
+
+        document.getElementById('decrease').addEventListener('click', () => {
+            currentCount = Math.max(currentCount - 2, 1);
+            updateCounter();
+        });
+
+        function updateCounter() {
+            counterElement.textContent = currentCount;
+        }
+
+        function getRandomStarCount(traps) {
+            if (traps === 1) {
+                return Math.floor(Math.random() * (20 - 7 + 1)) + 7;
+            } else if (traps === 3) {
+                return Math.floor(Math.random() * (7 - 1 + 1)) + 1;
+            } else if (traps === 5) {
+                return Math.floor(Math.random() * (10 - 5 + 1)) + 5;
+            } else if (traps === 7) {
+                return Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+            }
+            return 0;
+        }
+
+        document.getElementById('getSignal').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const getSignalBtn = e.target;
+            getSignalBtn.disabled = true;
+
+            const allStars = document.querySelectorAll('.star');
+            const allCells = document.querySelectorAll('.cell');
+            
+            allStars.forEach(star => {
+                star.style.display = 'none';
+                star.style.opacity = '0';
+            });
+            allCells.forEach(cell => cell.classList.remove('revealed'));
+
+            const starCount = getRandomStarCount(currentCount);
+            const positions = new Set();
+
+            while (positions.size < starCount) {
+                const randomPos = Math.floor(Math.random() * 25);
+                positions.add(randomPos);
+            }
+
+            for (const pos of positions) {
+                await new Promise(resolve => setTimeout(resolve, 300));
+                allStars[pos].style.display = 'block';
+                allStars[pos].style.opacity = '1';
+                allCells[pos].classList.add('revealed');
+            }
+
+            getSignalBtn.disabled = false;
+        });
+
+        // Aviator Logic
+        document.getElementById('signalBtn').addEventListener('click', () => {
+            const coefficient = document.getElementById('coefficient');
+            const signalBtn = document.getElementById('signalBtn');
+            signalBtn.disabled = true;
+
+            const coef = (Math.random() * 13.5 + 1).toFixed(1);
+            coefficient.textContent = `x${coef}`;
+            coefficient.style.opacity = '1';
+
+            setTimeout(() => {
+                coefficient.style.opacity = '0';
+                signalBtn.disabled = false;
+                setTimeout(() => {
+                    coefficient.textContent = '';
+                }, 500);
+            }, 2000);
+        });
+
+        // Bombucks Logic
+        let currentStep = 0;
+
+        function updateBombucksGrid() {
+            const fieldSize = document.getElementById('fieldSize').value;
+            const cols = parseInt(fieldSize.split('x')[1]);
+            const rows = 3;
+            const cellWidth = 90;
+            const cellHeight = 107;
+            const gap = 10;
+            const padding = 8;
+
+            const gridWidth = cols * cellWidth + (cols - 1) * gap + padding * 2;
+            const gridHeight = rows * cellHeight + (rows - 1) * gap + padding * 2;
+
+            const gridContainer = document.getElementById('bombucksGridContainer');
+            const gridBackground = document.getElementById('bombucksGridBackground');
+            const grid = document.getElementById('bombucksGrid');
+
+            gridContainer.style.width = `${gridWidth}px`;
+            gridContainer.style.height = `${gridHeight}px`;
+            gridBackground.style.width = `${gridWidth}px`;
+            gridBackground.style.height = `${gridHeight}px`;
+
+            grid.style.width = `${gridWidth}px`;
+            grid.style.height = `${gridHeight}px`;
+            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+            grid.innerHTML = '';
+            for (let i = 0; i < rows * cols; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'bombucks-cell';
+                const oval = document.createElement('div');
+                oval.className = 'oval';
+                cell.appendChild(oval);
+                grid.appendChild(cell);
+            }
+
+            currentStep = 0;
+        }
+
+        document.getElementById('fieldSize').addEventListener('change', () => {
+            updateBombucksGrid();
+            resetBombucks();
+        });
+
+        document.getElementById('bombucksPlay').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const playBtn = e.target;
+            playBtn.disabled = true;
+
+            const fieldSize = document.getElementById('fieldSize').value;
+            const cols = parseInt(fieldSize.split('x')[1]);
+            const rows = 3;
+            const allCells = document.querySelectorAll('.bombucks-cell');
+
+            resetBombucks();
+
+            for (let row = rows - 1; row >= 0; row--) {
+                const randomCol = Math.floor(Math.random() * cols);
+                const cellIndex = row * cols + randomCol;
+                await highlightCell(allCells, cellIndex);
+            }
+
+            playBtn.disabled = false;
+        });
+
+        async function highlightCell(allCells, cellIndex) {
+            return new Promise(resolve => {
+                const cell = allCells[cellIndex];
+                cell.classList.add('highlighted');
+                const oval = cell.querySelector('.oval');
+                oval.style.display = 'block';
+                setTimeout(resolve, 500);
+            });
+        }
+
+        // Football X Logic
+        document.getElementById('kickBtn').addEventListener('click', async () => {
+            const kickBtn = document.getElementById('kickBtn');
+            const targets = document.querySelectorAll('.target');
+            const coefficients = document.querySelectorAll('.coefficient');
+            kickBtn.disabled = true;
+
+            targets.forEach(target => target.classList.remove('active'));
+            coefficients.forEach(coef => coef.classList.remove('active'));
+
+            const randomTarget = Math.floor(Math.random() * targets.length);
+            await new Promise(resolve => {
+                setTimeout(() => {
+                    targets[randomTarget].classList.add('active');
+                    resolve();
+                }, 500);
+            });
+
+            kickCount = Math.min(kickCount + 1, 5);
+            if (kickCount > 0) {
+                coefficients[kickCount - 1].classList.add('active');
+            }
+
+            setTimeout(() => {
+                kickBtn.disabled = false;
+            }, 1000);
+        });
+
+        // Particles Animation
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialization
+        createParticles();
+        updateBombucksGrid();
+    </script>
+</body>
+</html>

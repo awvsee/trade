@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOXWIN - Crypto & Mines</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         html, body {
             margin: 0;
             padding: 0;
             height: 100vh;
-            background: #0D1223;
+            background: #000000;
             font-family: 'Rubik', sans-serif;
             color: #ffffff;
             overflow: hidden;
@@ -31,7 +31,7 @@
         /* Main Menu Design */
         .main-menu-container {
             height: 100vh;
-            background: linear-gradient(135deg, #0D1223, #1a1e2a);
+            background: #000000;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -42,93 +42,195 @@
             overflow: hidden;
         }
 
+        .main-menu-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000000 0%, #1A1A1A 50%, #000000 100%);
+            opacity: 0.8;
+            z-index: 1;
+            animation: gradientShift 15s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .flag-container {
+            display: flex;
+            gap: 4px;
+            z-index: 3;
+            margin-top: 6px;
+        }
+
+        .flag-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #FFFFFF;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-width 0.2s ease;
+        }
+
+        .flag-icon.selected {
+            border-width: 2px;
+            transform: scale(1.1);
+        }
+
+        .online-count {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            transition: opacity 0.3s ease;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .red-dot {
+            width: 8px;
+            height: 8px;
+            background: red;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         .main-menu-header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             position: relative;
             z-index: 2;
+            animation: fadeInHeader 1s ease-out;
+        }
+
+        @keyframes fadeInHeader {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .main-menu-logo {
-            width: 100px;
-            height: 100px;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+            width: 180px;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
-        .main-menu-title {
-            font-size: 50px;
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            letter-spacing: 4px;
-            margin-top: 10px;
-            font-family: 'Rubik', sans-serif;
+        .main-menu-logo:hover {
+            transform: scale(1.1);
         }
 
         .main-menu {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
             width: 100%;
-            max-width: 400px;
+            max-width: 600px;
             position: relative;
             z-index: 2;
+            margin-top: 20px;
         }
 
         .menu-games {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 30px;
+            justify-items: center;
         }
 
         .menu-btn {
-            position: relative;
-            width: 100%;
-            height: 110px;
-            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
-            border-radius: 15px;
-            font-size: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .menu-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0.6;
-            transition: opacity 0.3s ease;
-        }
-
-        .menu-btn span {
-            position: relative;
-            z-index: 1;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-            display: block;
-            padding: 8px 12px;
-            max-width: 90%;
-            letter-spacing: 2px;
-            font-family: 'Rubik', sans-serif;
+            transition: transform 0.3s ease;
         }
 
         .menu-btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
         }
 
-        .menu-btn:hover img {
+        .menu-btn-image {
+            position: relative;
+            width: 260px;
+            height: 170px;
+            background: linear-gradient(45deg, #1C2333, #2A3447);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 4px solid #FFFFFF;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .menu-btn-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-btn:hover .menu-btn-image {
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.5);
+            border-color: #FFFFFF;
+        }
+
+        .menu-btn:hover .menu-btn-image img {
             opacity: 0.9;
+        }
+
+        .menu-btn-title {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-family: 'Rubik', sans-serif;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .menu-btn-game {
+            background: #00CC00;
+            color: #ffffff;
+            border: none;
+            padding: 10px 40px;
+            border-radius: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Rubik', sans-serif;
+            letter-spacing: 1px;
+            box-shadow: 0 3px 10px rgba(0, 204, 0, 0.4);
+            width: 100%;
+            max-width: 140px;
+        }
+
+        .menu-btn-game:hover {
+            background: #00E600;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 204, 0, 0.6);
         }
 
         .menu-background {
@@ -137,15 +239,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.8) 80%);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1;
             pointer-events: none;
-            animation: pulse 10s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.8; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.05); }
         }
 
         .menu-particles {
@@ -160,24 +256,86 @@
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 3px;
+            height: 3px;
             background: #ffffff;
             border-radius: 50%;
-            opacity: 0.5;
-            animation: float 5s infinite ease-in-out;
+            opacity: 0.7;
+            animation: float 10s infinite ease-in-out;
         }
 
         @keyframes float {
-            0% { transform: translateY(0); opacity: 0.5; }
-            50% { opacity: 0.8; }
+            0% { transform: translateY(0); opacity: 0.7; }
+            50% { opacity: 1; }
             100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .main-menu-logo {
+                width: 120px;
+                height: auto;
+            }
+
+            .main-menu {
+                max-width: 100%;
+                padding: 0 10px;
+                margin-top: 15px;
+            }
+
+            .main-menu-header {
+                margin-bottom: 10px;
+            }
+
+            .menu-btn-image {
+                width: 150px;
+                height: 135px;
+                border-radius: 25px;
+                border: 2px solid #FFFFFF;
+            }
+
+            .menu-btn-title {
+                font-size: 18px;
+            }
+
+            .menu-btn-game {
+                font-size: 16px;
+                padding: 8px 30px;
+                border-radius: 12px;
+                max-width: 120px;
+            }
+
+            .menu-games {
+                gap: 20px;
+            }
+
+            .flag-container {
+                gap: 3px;
+                margin-top: 5px;
+            }
+
+            .flag-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .online-count {
+                top: 10px;
+                left: 10px;
+                font-size: 14px;
+                gap: 4px;
+            }
+
+            .red-dot {
+                width: 6px;
+                height: 6px;
+            }
         }
 
         /* Mines Styles */
         .mines-body {
             height: 100vh;
-            background: #0D1223;
+            background: #0C1221;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -192,10 +350,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(11, 17, 31, 0.9) 80%);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 0;
             pointer-events: none;
-            animation: pulse 10s infinite alternate;
         }
 
         .grid-container {
@@ -327,14 +484,14 @@
         }
 
         .get-signal-btn {
-            background: #2151C1;
+            background: #007BFF;
             color: white;
             border: none;
             padding: 12px 40px;
             border-radius: 15px;
             font-size: 18px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(33, 81, 193, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
             transition: all 0.3s ease;
             font-family: 'Rubik', sans-serif;
             width: 100%;
@@ -343,20 +500,20 @@
         }
 
         .get-signal-btn:hover {
-            background: #2a67e5;
+            background: #0056b3;
             transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(33, 81, 193, 0.6);
+            box-shadow: 0 6px 15px rgba(0, 86, 179, 0.6);
         }
 
         .back-signal-btn {
-            background: #ff4444;
+            background: linear-gradient(45deg, #FF4500, #DC143C);
             color: white;
             border: none;
             padding: 10px 30px;
             border-radius: 12px;
             font-size: 16px;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(255, 68, 68, 0.4);
+            box-shadow: 0 2px 5px rgba(255, 69, 0, 0.4);
             transition: all 0.3s ease;
             font-family: 'Rubik', sans-serif;
             width: 100%;
@@ -365,256 +522,103 @@
             letter-spacing: 1px;
         }
 
-        .back-signal-btn:hover {
-            background: #ff6666;
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(255, 68, 68, 0.6);
+        .coinflip-container .back-signal-btn {
+            margin-top: 20px;
         }
 
-        /* Aviator Styles */
-        .aviator-body {
+        .back-signal-btn:hover {
+            background: linear-gradient(45deg, #FF6347, #FF0000);
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(255, 99, 71, 0.6);
+        }
+
+        /* Coin Flip Styles */
+        .coinflip-body {
             height: 100vh;
-            background: #2b0000;
+            background: #141415;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            font-family: 'Rubik', sans-serif;
             position: relative;
-            overflow: hidden;
         }
 
-        .aviator-container {
+        .coinflip-container {
             width: 100%;
             max-width: 360px;
             text-align: center;
             padding: 15px;
         }
 
-        .aviator-title {
-            font-size: 36px;
-            color: #ff4444;
-            text-shadow: 0 0 10px rgba(255, 68, 68, 0.7);
+        .coinflip-result-label {
+            font-size: 24px;
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            font-family: 'Rubik', sans-serif;
+            letter-spacing: 1px;
             margin-bottom: 15px;
-            letter-spacing: 2px;
-            font-family: 'Rubik', sans-serif;
+            min-height: 30px;
         }
 
-        .coefficient-circle {
+        .coinflip-display {
             position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 15px;
-            background: #1a0000;
-            border: 3px solid #ff4444;
-            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
             display: flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+            align-items: center;
         }
 
-        .coefficient {
-            font-size: 50px;
-            color: #ff4444;
-            text-shadow: 0 0 15px rgba(255, 68, 68, 0.7);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            letter-spacing: 2px;
-            font-family: 'Rubik', sans-serif;
+        #coinImage {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
         }
 
-        .signal-btn {
+        #coinImage.flipping {
+            animation: flipAnimation 1s ease-in-out;
+        }
+
+        @keyframes flipAnimation {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(720deg) scale(1.2); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        .flip-btn {
             padding: 12px 40px;
-            background: linear-gradient(to right, #ff4444, #ff6666);
-            color: white;
+            background: linear-gradient(45deg, #FFFFFF, #F5F5F5);
+            color: #000000;
             border: none;
             border-radius: 20px;
             font-size: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4);
             width: 100%;
             max-width: 260px;
-            margin: 8px 0;
             font-family: 'Rubik', sans-serif;
             letter-spacing: 2px;
         }
 
-        .signal-btn:hover {
-            background: linear-gradient(to right, #ff6666, #ff8888);
+        .flip-btn:hover {
+            background: linear-gradient(45deg, #F5F5F5, #E8E8E8);
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 68, 68, 0.6);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.6);
         }
 
-        .signal-btn:disabled {
+        .flip-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Bombucks Styles */
-        .bombucks-body {
+        /* Penalty Styles */
+        .penalty-body {
             height: 100vh;
-            background: #1D1E23; /* Обновил фон на #1D1E23 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Rubik', sans-serif;
-        }
-
-        .bombucks-grid-container {
-            position: relative;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .bombucks-grid-background {
-            position: absolute;
-            background: #1D1E23;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            top: 0;
-            left: 0;
-        }
-
-        .bombucks-grid {
-            display: grid;
-            grid-template-rows: repeat(3, 1fr);
-            gap: 10px;
-            padding: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .bombucks-cell {
-            position: relative;
-            width: 90px;
-            height: 107px;
-            background: url('https://i.ibb.co/6cQvxhFf/image.png') no-repeat center center;
-            background-size: cover;
-            border: none;
-            box-shadow: none;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .bombucks-cell.highlighted {
-            background: url('https://i.ibb.co/6cQvxhFf/image.png') no-repeat center center;
-            background-size: cover;
-            transform: scale(1.05);
-        }
-
-        .bombucks-cell .oval {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 90px;
-            height: 77px;
-            background: url('https://i.ibb.co/27QxBTkc/image.png') no-repeat center center; /* Новая картинка */
-            background-size: cover;
-            border: none;
-            box-shadow: none;
-            border-radius: 10px;
-            transform: translateX(-50%);
-            display: none;
-            animation: ovalReveal 0.5s ease-out;
-        }
-
-        .bombucks-cell.highlighted .oval {
-            display: block;
-        }
-
-        @keyframes ovalReveal {
-            0% { transform: translateX(-50%) scale(0); opacity: 0; }
-            70% { transform: translateX(-50%) scale(1.1); opacity: 1; }
-            100% { transform: translateX(-50%) scale(1); opacity: 1; }
-        }
-
-        .bombucks-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            width: 280px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .crypto-select-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        select#fieldSize {
-            width: 100%;
-            padding: 10px 35px 10px 15px;
-            background: linear-gradient(135deg, #1a1e2a 0%, #2a3552 100%);
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            font-size: 18px;
-            font-family: 'Rubik', sans-serif;
-            cursor: pointer;
-            appearance: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            letter-spacing: 2px;
-        }
-
-        select#fieldSize:hover {
-            background: linear-gradient(135deg, #2a3552 0%, #3b4866 100%);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            transform: translateY(-2px);
-        }
-
-        select#fieldSize option {
-            background: #1a1a1a;
-            color: #fff;
-            font-family: 'Rubik', sans-serif;
-            font-size: 18px;
-        }
-
-        .select-arrow {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 7px solid #00c853;
-            pointer-events: none;
-        }
-
-        .bombucks-play-btn {
-            padding: 14px 40px;
-            background: #16151A; /* Новый цвет кнопки */
-            border: 2px solid #222328; /* Обводка */
-            color: white;
-            border-radius: 20px; /* Сравнял с радиусом кнопки выбора рядов */
-            cursor: pointer;
-            font-size: 18px; /* Сравнял с размером шрифта кнопки выбора рядов */
-            font-family: 'Rubik', sans-serif;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Сравнял тень с кнопкой выбора рядов */
-            width: 100%; /* Сравнял ширину */
-            letter-spacing: 2px;
-        }
-
-        .bombucks-play-btn:hover {
-            background: #222328; /* Чуть светлее при наведении */
-            transform: translateY(-2px); /* Сравнял эффект с кнопкой выбора рядов */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Football X Styles */
-        .footballx-body {
-            height: 100vh;
-            background: url('https://i.ibb.co/MybK7q64/i-Phone-16-2.png') no-repeat center center fixed;
-            background-size: cover;
+            background: #000000;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -623,117 +627,129 @@
             position: relative;
         }
 
-        .footballx-container {
+        .penalty-container {
             width: 100%;
             max-width: 460px;
             text-align: center;
             padding: 15px;
         }
 
-        .goal {
-            position: relative;
-            width: 360px;
-            height: 300px;
-            margin: 0 auto 15px;
-            background: transparent;
-            overflow: hidden;
-        }
-
-        .goal-targets {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-rows: repeat(3, 1fr);
-            gap: 10px;
-            padding: 160px 10px 20px 10px;
-            box-sizing: border-box;
-        }
-
-        .target-row {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-        }
-
-        .target {
-            position: relative;
-            width: 40px;
-            height: 40px;
-            background: url('https://i.ibb.co/0jV52LPv/750102-200-1.png') no-repeat center center;
-            background-size: cover;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            margin: 0 auto;
-        }
-
-        .target.active {
-            background: url('https://i.ibb.co/0jV52LPv/750102-200-1.png') no-repeat center center;
-            background-size: cover;
-            transform: scale(1.2);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-            filter: hue-rotate(120deg);
-            animation: glowRed 0.5s ease-in-out;
-        }
-
-        @keyframes glowRed {
-            0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 1); }
-            100% { box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); }
-        }
-
-        .coefficients {
-            display: flex;
-            justify-content: space-between;
-            width: 360px;
-            margin: 10px auto;
-            font-size: 22px;
+        .penalty-maintenance {
+            font-size: 24px;
+            font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            font-family: 'Rubik', sans-serif;
+            letter-spacing: 1px;
         }
 
-        .coefficient {
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+        @media (max-width: 600px) {
+            .penalty-maintenance {
+                font-size: 18px;
+            }
         }
 
-        .coefficient.active {
-            background: #ff4444;
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+        /* Lucky Jet Styles */
+        .luckyjet-body {
+            height: 100vh;
+            background: #151028;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rubik', sans-serif;
+            position: relative;
         }
 
-        .footballx-kick-btn {
+        .luckyjet-signal-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: rgba(146, 76, 245, 0.2);
+            border: 3px solid #924CF5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(146, 76, 245, 0.3);
+            animation: spawnGlow 0.8s ease-out;
+            display: none;
+        }
+
+        @keyframes spawnGlow {
+            0% { transform: scale(0.8); box-shadow: 0 0 5px rgba(146, 76, 245, 0.2); }
+            50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(146, 76, 245, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 0 10px rgba(146, 76, 245, 0.3); }
+        }
+
+        .luckyjet-signal {
+            font-size: 40px;
+            color: #924CF5;
+            text-shadow: 0 0 8px rgba(146, 76, 245, 0.5);
+            animation: textPop 0.5s ease-out;
+        }
+
+        @keyframes textPop {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); opacity: 0.8; }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .jet-btn, .back-btn {
             padding: 12px 40px;
-            background: linear-gradient(to right, #ff4444, #ff6666);
-            color: white;
+            background: linear-gradient(45deg, #924CF5, #B266F5);
+            color: #ffffff;
             border: none;
             border-radius: 20px;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4);
+            box-shadow: 0 0 10px rgba(146, 76, 245, 0.4);
             width: 100%;
-            max-width: 260px;
+            max-width: 300px;
             font-family: 'Rubik', sans-serif;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            margin: 10px auto;
         }
 
-        .footballx-kick-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 68, 68, 0.6);
+        .back-btn {
+            margin-top: 20px;
+            font-size: 18px;
+            max-width: 140px;
         }
 
-        .footballx-kick-btn:disabled {
+        .jet-btn:hover, .back-btn:hover {
+            background: linear-gradient(45deg, #A577F5, #C477F5);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(146, 76, 245, 0.6);
+        }
+
+        .jet-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Animation Keyframes */
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @media (max-width: 600px) {
+            .luckyjet-signal-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .luckyjet-signal {
+                font-size: 32px;
+            }
+
+            .jet-btn, .back-btn {
+                padding: 10px 30px;
+                font-size: 20px;
+                max-width: 260px;
+            }
+
+            .back-btn {
+                font-size: 16px;
+                max-width: 120px;
+            }
         }
     </style>
 </head>
@@ -743,28 +759,50 @@
         <div class="main-menu-container">
             <div class="menu-background"></div>
             <div class="menu-particles" id="particles"></div>
+            <span class="online-count" id="onlineCount">Online: 230<span class="red-dot"></span></span>
             <div class="main-menu-header">
-                <img src="https://i.ibb.co/MDKGQX2c/card-2025-04-03-T145434-941.png" alt="NOXWIN Logo" class="main-menu-logo">
-                <h1 class="main-menu-title">NOXWIN</h1>
+                <a href="https://1waufy.com/casino/list/4?p=vlrn" target="_blank">
+                    <img src="https://i.ibb.co/MkKTDZSV/666.png" alt="NOXWIN Logo" class="main-menu-logo">
+                </a>
+                <div class="flag-container">
+                    <img src="https://i.ibb.co/5hvqz31C/image.png" alt="Russia Flag" class="flag-icon" data-lang="ru">
+                    <img src="https://i.ibb.co/tMYF9Lyw/image.png" alt="USA Flag" class="flag-icon" data-lang="en">
+                    <img src="https://i.ibb.co/sv07xHrq/image.png" alt="Turkey Flag" class="flag-icon" data-lang="tr">
+                    <img src="https://i.ibb.co/SDWHygwN/image.png" alt="India Flag" class="flag-icon" data-lang="hi">
+                    <img src="https://i.ibb.co/zWDyrJFS/image.png" alt="Uzbekistan Flag" class="flag-icon" data-lang="uz">
+                    <img src="https://i.ibb.co/GQPhkkVw/image.png" alt="Spain Flag" class="flag-icon" data-lang="es">
+                </div>
             </div>
             <div class="main-menu">
                 <div class="menu-games">
-                    <button class="menu-btn" data-tab="mines">
-                        <img src="https://i.ibb.co/GQggzxh5/mines-1win-logo.webp" alt="Mines">
-                        <span>Mines</span>
-                    </button>
-                    <button class="menu-btn" data-tab="aviator">
-                        <img src="https://i.ibb.co/RGM18DnY/Picture1.png" alt="Aviator">
-                        <span>Aviator</span>
-                    </button>
-                    <button class="menu-btn" data-tab="bombucks">
-                        <img src="https://i.ibb.co/LXtLdVzW/800x450.webp" alt="Bombucks">
-                        <span>Bombucks</span>
-                    </button>
-                    <button class="menu-btn" data-tab="footballx">
-                        <img src="https://i.ibb.co/MDsxhstp/image.png" alt="Football X">
-                        <span>Football X Kick</span>
-                    </button>
+                    <div class="menu-btn" data-tab="mines">
+                        <div class="menu-btn-image">
+                            <img src="https://i.ibb.co/cSg8Z5ZF/image.png" alt="Mines">
+                        </div>
+                        <span class="menu-btn-title">Mines</span>
+                        <button class="menu-btn-game">GAME</button>
+                    </div>
+                    <div class="menu-btn" data-tab="coinflip">
+                        <div class="menu-btn-image">
+                            <img src="https://i.ibb.co/XxKyZ8bT/image.png" alt="Coin Flip">
+                        </div>
+                        <span class="menu-btn-title">Coin Flip</span>
+                        <button class="menu-btn-game">GAME</button>
+                    </div>
+                    <div class="menu-btn" data-tab="penalty">
+                        <div class="menu-btn-image">
+                            <img src="https://i.ibb.co/LD4h2N2q/image.png" alt="Penalty">
+                        </div>
+                        <span class="menu-btn-title">Penalty</span>
+                        <button class="menu-btn-game">GAME</button>
+                    </div>
+                    <div class="menu-btn" data-tab="luckyjet">
+                        <div class="menu-btn-image">
+                            <img src="https://i.ibb.co/sd1FDgR0/image.png" alt="Lucky Jet">
+                        </div>
+                        <span class="menu-btn-title">Lucky Jet</span>
+                        <button class="menu-btn-game">GAME</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -792,93 +830,140 @@
         </div>
     </div>
 
-    <!-- Aviator Content -->
-    <div id="aviator" class="content">
-        <div class="aviator-body">
-            <div class="aviator-container">
-                <h2 class="aviator-title">Aviator</h2>
-                <div class="coefficient-circle">
-                    <div class="coefficient" id="coefficient"></div>
+    <!-- Coin Flip Content -->
+    <div id="coinflip" class="content">
+        <div class="coinflip-body">
+            <div class="coinflip-container">
+                <div class="coinflip-result-label" id="coinflipResultLabel"></div>
+                <div class="coinflip-display">
+                    <img id="coinImage" src="https://i.ibb.co/chnGm10w/image-4.png" alt="Coin">
                 </div>
-                <button class="signal-btn" id="signalBtn">Signal</button>
-                <button class="back-signal-btn" id="aviatorBackBtn" data-tab="main-menu">Back</button>
+                <button class="flip-btn" id="flipBtn">Get Signal</button>
+                <button class="back-signal-btn" id="coinflipBackBtn" data-tab="main-menu">Back</button>
             </div>
         </div>
     </div>
 
-    <!-- Bombucks Content -->
-    <div id="bombucks" class="content">
-        <div class="bombucks-body">
-            <div class="bombucks-grid-container" id="bombucksGridContainer">
-                <div class="bombucks-grid-background" id="bombucksGridBackground"></div>
-                <div class="bombucks-grid" id="bombucksGrid"></div>
-            </div>
-            <div class="bombucks-controls">
-                <div class="crypto-select-wrapper">
-                    <select id="fieldSize">
-                        <option value="3x2">3x2</option>
-                        <option value="6x3">6x3</option>
-                    </select>
-                    <div class="select-arrow"></div>
-                </div>
-                <button class="bombucks-play-btn" id="bombucksPlay">Play</button>
-                <button class="back-signal-btn" id="bombucksBackBtn" data-tab="main-menu">Back</button>
+    <!-- Penalty Content -->
+    <div id="penalty" class="content">
+        <div class="penalty-body">
+            <div class="penalty-container">
+                <h2 class="penalty-maintenance" id="penaltyMaintenance"></h2>
+                <button class="back-signal-btn" id="penaltyBackBtn" data-tab="main-menu">Back</button>
             </div>
         </div>
     </div>
 
-    <!-- Football X Content -->
-    <div id="footballx" class="content">
-        <div class="footballx-body">
-            <div class="footballx-container">
-                <div class="goal">
-                    <div class="goal-targets" id="goalTargets">
-                        <div class="target-row">
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                        </div>
-                        <div class="target-row">
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                        </div>
-                        <div class="target-row">
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                            <div class="target"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="coefficients" id="coefficients">
-                    <span class="coefficient" data-value="2">x2</span>
-                    <span class="coefficient" data-value="4">x4</span>
-                    <span class="coefficient" data-value="12">x12</span>
-                    <span class="coefficient" data-value="20">x20</span>
-                    <span class="coefficient" data-value="32">x32</span>
-                </div>
-                <button class="footballx-kick-btn" id="kickBtn">Kick!</button>
-                <button class="back-signal-btn" id="footballxBackBtn" data-tab="main-menu">Back</button>
+    <!-- Lucky Jet Content -->
+    <div id="luckyjet" class="content">
+        <div class="luckyjet-body">
+            <div class="luckyjet-signal-circle" id="luckyjetSignalCircle">
+                <div class="luckyjet-signal" id="luckyjetSignal"></div>
             </div>
+            <button class="jet-btn" id="jetBtn">Launch Jet</button>
+            <button class="back-btn" id="luckyjetBackBtn" data-tab="main-menu">Back</button>
         </div>
     </div>
 
     <script>
+        // Language Translations
+        const translations = {
+            ru: {
+                game: 'ИГРА',
+                getSignal: 'Получить сигнал',
+                back: 'Назад',
+                kick: 'Удар!',
+                launchJet: 'Запустить Джет',
+                penaltyMaintenance: 'Технические работы, игра временно недоступна'
+            },
+            en: {
+                game: 'GAME',
+                getSignal: 'Get Signal',
+                back: 'Back',
+                kick: 'Kick!',
+                launchJet: 'Launch Jet',
+                penaltyMaintenance: 'Maintenance in progress, game temporarily unavailable'
+            },
+            tr: {
+                game: 'OYUN',
+                getSignal: 'Sinyal Al',
+                back: 'Geri',
+                kick: 'Vur!',
+                launchJet: 'Jet Başlat',
+                penaltyMaintenance: 'Bakım çalışması, oyun geçici olarak kullanılamıyor'
+            },
+            hi: {
+                game: 'खेल',
+                getSignal: 'सिग्नल प्राप्त करें',
+                back: 'वापस',
+                kick: 'किक!',
+                launchJet: 'जेट लॉन्च करें',
+                penaltyMaintenance: 'रखरखाव कार्य प्रगति पर, खेल अस्थायी रूप से अनुपलब्ध'
+            },
+            uz: {
+                game: 'O‘YIN',
+                getSignal: 'Signal Olish',
+                back: 'Orqaga',
+                kick: 'Tepish!',
+                launchJet: 'Jet Ishga Tushirish',
+                penaltyMaintenance: 'Texnik ishlar, o‘yin vaqtincha mavjud emas'
+            },
+            es: {
+                game: 'JUEGO',
+                getSignal: 'Obtener Señal',
+                back: 'Atrás',
+                kick: '¡Patea!',
+                launchJet: 'Lanzar Jet',
+                penaltyMaintenance: 'Mantenimiento en curso, juego temporalmente no disponible'
+            }
+        };
+
+        // Language Switching Logic
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            document.querySelectorAll('.flag-icon').forEach(flag => {
+                if (flag.dataset.lang === lang) {
+                    flag.classList.add('selected');
+                } else {
+                    flag.classList.remove('selected');
+                }
+            });
+            const texts = translations[lang];
+            document.querySelectorAll('.menu-btn-game').forEach(btn => btn.textContent = texts.game);
+            const getSignalBtn = document.getElementById('getSignal');
+            if (getSignalBtn) getSignalBtn.textContent = texts.getSignal;
+            const backSignalBtn = document.getElementById('backSignal');
+            if (backSignalBtn) backSignalBtn.textContent = texts.back;
+            const flipBtn = document.getElementById('flipBtn');
+            if (flipBtn) flipBtn.textContent = texts.getSignal;
+            const coinflipBackBtn = document.getElementById('coinflipBackBtn');
+            if (coinflipBackBtn) coinflipBackBtn.textContent = texts.back;
+            const penaltyBackBtn = document.getElementById('penaltyBackBtn');
+            if (penaltyBackBtn) penaltyBackBtn.textContent = texts.back;
+            const penaltyMaintenance = document.getElementById('penaltyMaintenance');
+            if (penaltyMaintenance) penaltyMaintenance.textContent = texts.penaltyMaintenance;
+            const jetBtn = document.getElementById('jetBtn');
+            if (jetBtn) jetBtn.textContent = texts.launchJet;
+            const luckyjetBackBtn = document.getElementById('luckyjetBackBtn');
+            if (luckyjetBackBtn) luckyjetBackBtn.textContent = texts.back;
+        }
+
+        const savedLang = localStorage.getItem('language') || 'en';
+        setLanguage(savedLang);
+
+        document.querySelectorAll('.flag-icon').forEach(flag => {
+            flag.addEventListener('click', () => {
+                setLanguage(flag.dataset.lang);
+            });
+        });
+
         // Tab Switching Logic with Reset
         const contents = document.querySelectorAll('.content');
         const menuButtons = document.querySelectorAll('.menu-btn');
         const backSignalButton = document.getElementById('backSignal');
-        const aviatorBackButton = document.getElementById('aviatorBackBtn');
-        const bombucksBackButton = document.getElementById('bombucksBackBtn');
-        const footballxBackButton = document.getElementById('footballxBackBtn');
-
-        let kickCount = 0;
+        const coinflipBackButton = document.getElementById('coinflipBackBtn');
+        const penaltyBackButton = document.getElementById('penaltyBackBtn');
+        const luckyjetBackButton = document.getElementById('luckyjetBackBtn');
 
         function resetMines() {
             const allStars = document.querySelectorAll('.star');
@@ -888,63 +973,98 @@
                 star.style.opacity = '0';
             });
             allCells.forEach(cell => cell.classList.remove('revealed'));
-            document.getElementById('counter').textContent = '1';
+            const counter = document.getElementById('counter');
+            if (counter) counter.textContent = '1';
             currentCount = 1;
             const getSignalBtn = document.getElementById('getSignal');
-            getSignalBtn.style.display = 'block';
-            getSignalBtn.disabled = false;
+            if (getSignalBtn) {
+                getSignalBtn.style.display = 'block';
+                getSignalBtn.disabled = false;
+            }
         }
 
-        function resetAviator() {
-            const coefficient = document.getElementById('coefficient');
-            const signalBtn = document.getElementById('signalBtn');
-            coefficient.textContent = '';
-            coefficient.style.opacity = '0';
-            signalBtn.disabled = false;
+        function resetCoinFlip() {
+            const coinImage = document.getElementById('coinImage');
+            const coinflipResultLabel = document.getElementById('coinflipResultLabel');
+            const flipBtn = document.getElementById('flipBtn');
+            if (coinImage) coinImage.src = 'https://i.ibb.co/chnGm10w/image-4.png';
+            if (coinflipResultLabel) {
+                coinflipResultLabel.textContent = '';
+                coinflipResultLabel.style.color = '#FFFFFF';
+            }
+            if (flipBtn) flipBtn.disabled = false;
         }
 
-        function resetBombucks() {
-            const allCells = document.querySelectorAll('.bombucks-cell');
-            allCells.forEach(cell => {
-                cell.classList.remove('highlighted');
-                const oval = cell.querySelector('.oval');
-                if (oval) oval.style.display = 'none';
-            });
-            currentStep = 0;
-            const playBtn = document.getElementById('bombucksPlay');
-            playBtn.style.display = 'block';
-            playBtn.disabled = false;
-        }
-
-        function resetFootballX() {
-            const targets = document.querySelectorAll('.target');
-            const coefficients = document.querySelectorAll('.coefficient');
-            targets.forEach(target => target.classList.remove('active'));
-            coefficients.forEach(coef => coef.classList.remove('active'));
-            const kickBtn = document.getElementById('kickBtn');
-            kickBtn.disabled = false;
-            kickCount = 0;
+        function resetLuckyJet() {
+            const luckyjetSignal = document.getElementById('luckyjetSignal');
+            const luckyjetSignalCircle = document.getElementById('luckyjetSignalCircle');
+            const jetBtn = document.getElementById('jetBtn');
+            if (luckyjetSignal) luckyjetSignal.textContent = '';
+            if (luckyjetSignalCircle) luckyjetSignalCircle.style.display = 'none';
+            if (jetBtn) jetBtn.disabled = false;
         }
 
         function switchTab(tabId) {
             contents.forEach(c => c.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) targetTab.classList.add('active');
             if (tabId === 'main-menu') {
                 resetMines();
-                resetAviator();
-                resetBombucks();
-                resetFootballX();
+                resetCoinFlip();
+                resetLuckyJet();
             }
-            if (tabId === 'bombucks') updateBombucksGrid();
-            if (tabId === 'aviator') resetAviator();
-            if (tabId === 'footballx') resetFootballX();
+            const currentLang = localStorage.getItem('language') || 'en';
+            setLanguage(currentLang);
         }
 
-        menuButtons.forEach(button => button.addEventListener('click', () => switchTab(button.dataset.tab)));
-        backSignalButton.addEventListener('click', () => switchTab('main-menu'));
-        aviatorBackButton.addEventListener('click', () => switchTab('main-menu'));
-        bombucksBackButton.addEventListener('click', () => switchTab('main-menu'));
-        footballxBackButton.addEventListener('click', () => switchTab('main-menu'));
+        menuButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                switchTab(button.dataset.tab);
+            });
+            const gameButton = button.querySelector('.menu-btn-game');
+            if (gameButton) {
+                gameButton.addEventListener('click', () => switchTab(button.dataset.tab));
+            }
+        });
+
+        if (backSignalButton) backSignalButton.addEventListener('click', () => switchTab('main-menu'));
+        if (coinflipBackButton) coinflipBackButton.addEventListener('click', () => switchTab('main-menu'));
+        if (penaltyBackButton) penaltyBackButton.addEventListener('click', () => switchTab('main-menu'));
+        if (luckyjetBackButton) luckyjetBackButton.addEventListener('click', () => switchTab('main-menu'));
+
+        // Online Logic
+        function updateOnlineCount() {
+            const now = new Date();
+            const hours = now.getHours();
+            let min, max;
+
+            if (hours >= 0 && hours < 12) {
+                // Morning: 50-100
+                min = 50;
+                max = 100;
+            } else if (hours >= 12 && hours < 18) {
+                // Day: 100-200
+                min = 100;
+                max = 200;
+            } else {
+                // Evening: 200-250
+                min = 200;
+                max = 250;
+            }
+
+            const onlineCount = Math.floor(Math.random() * (max - min + 1)) + min;
+            const onlineElement = document.getElementById('onlineCount');
+            if (onlineElement) {
+                onlineElement.style.opacity = '0';
+                setTimeout(() => {
+                    onlineElement.innerHTML = `Online: ${onlineCount}<span class="red-dot"></span>`;
+                    onlineElement.style.opacity = '1';
+                }, 300);
+            }
+        }
+
+        updateOnlineCount();
+        setInterval(updateOnlineCount, 15000);
 
         // Mines Logic
         let currentCount = 1;
@@ -959,208 +1079,136 @@
             return cell;
         });
 
-        document.getElementById('grid').append(...stars);
+        const grid = document.getElementById('grid');
+        if (grid) grid.append(...stars);
 
-        document.getElementById('increase').addEventListener('click', () => {
-            currentCount = Math.min(currentCount + 2, 7);
-            updateCounter();
-        });
+        const increaseBtn = document.getElementById('increase');
+        if (increaseBtn) {
+            increaseBtn.addEventListener('click', () => {
+                currentCount = Math.min(currentCount + 2, 7);
+                if (counterElement) counterElement.textContent = currentCount;
+            });
+        }
 
-        document.getElementById('decrease').addEventListener('click', () => {
-            currentCount = Math.max(currentCount - 2, 1);
-            updateCounter();
-        });
-
-        function updateCounter() {
-            counterElement.textContent = currentCount;
+        const decreaseBtn = document.getElementById('decrease');
+        if (decreaseBtn) {
+            decreaseBtn.addEventListener('click', () => {
+                currentCount = Math.max(currentCount - 2, 1);
+                if (counterElement) counterElement.textContent = currentCount;
+            });
         }
 
         function getRandomStarCount(traps) {
-            if (traps === 1) {
-                return Math.floor(Math.random() * (20 - 7 + 1)) + 7;
-            } else if (traps === 3) {
-                return Math.floor(Math.random() * (7 - 1 + 1)) + 1;
-            } else if (traps === 5) {
-                return Math.floor(Math.random() * (10 - 5 + 1)) + 5;
-            } else if (traps === 7) {
-                return Math.floor(Math.random() * (5 - 1 + 1)) + 1;
-            }
+            if (traps === 1) return Math.floor(Math.random() * (20 - 7 + 1)) + 7;
+            if (traps === 3) return Math.floor(Math.random() * (7 - 1 + 1)) + 1;
+            if (traps === 5) return Math.floor(Math.random() * (10 - 5 + 1)) + 5;
+            if (traps === 7) return Math.floor(Math.random() * (5 - 1 + 1)) + 1;
             return 0;
         }
 
-        document.getElementById('getSignal').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const getSignalBtn = e.target;
-            getSignalBtn.disabled = true;
+        const getSignalBtn = document.getElementById('getSignal');
+        if (getSignalBtn) {
+            getSignalBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                getSignalBtn.disabled = true;
 
-            const allStars = document.querySelectorAll('.star');
-            const allCells = document.querySelectorAll('.cell');
-            
-            allStars.forEach(star => {
-                star.style.display = 'none';
-                star.style.opacity = '0';
-            });
-            allCells.forEach(cell => cell.classList.remove('revealed'));
+                const allStars = document.querySelectorAll('.star');
+                const allCells = document.querySelectorAll('.cell');
+                
+                allStars.forEach(star => {
+                    star.style.display = 'none';
+                    star.style.opacity = '0';
+                });
+                allCells.forEach(cell => cell.classList.remove('revealed'));
 
-            const starCount = getRandomStarCount(currentCount);
-            const positions = new Set();
+                const starCount = getRandomStarCount(currentCount);
+                const positions = new Set();
 
-            while (positions.size < starCount) {
-                const randomPos = Math.floor(Math.random() * 25);
-                positions.add(randomPos);
-            }
+                while (positions.size < starCount) {
+                    const randomPos = Math.floor(Math.random() * 25);
+                    positions.add(randomPos);
+                }
 
-            for (const pos of positions) {
-                await new Promise(resolve => setTimeout(resolve, 300));
-                allStars[pos].style.display = 'block';
-                allStars[pos].style.opacity = '1';
-                allCells[pos].classList.add('revealed');
-            }
+                for (const pos of positions) {
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    allStars[pos].style.display = 'block';
+                    allStars[pos].style.opacity = '1';
+                    allCells[pos].classList.add('revealed');
+                }
 
-            getSignalBtn.disabled = false;
-        });
-
-        // Aviator Logic
-        document.getElementById('signalBtn').addEventListener('click', () => {
-            const coefficient = document.getElementById('coefficient');
-            const signalBtn = document.getElementById('signalBtn');
-            signalBtn.disabled = true;
-
-            const coef = (Math.random() * 13.5 + 1).toFixed(1);
-            coefficient.textContent = `x${coef}`;
-            coefficient.style.opacity = '1';
-
-            setTimeout(() => {
-                coefficient.style.opacity = '0';
-                signalBtn.disabled = false;
-                setTimeout(() => {
-                    coefficient.textContent = '';
-                }, 500);
-            }, 2000);
-        });
-
-        // Bombucks Logic
-        let currentStep = 0;
-
-        function updateBombucksGrid() {
-            const fieldSize = document.getElementById('fieldSize').value;
-            const cols = parseInt(fieldSize.split('x')[1]);
-            const rows = 3;
-            const cellWidth = 90;
-            const cellHeight = 107;
-            const gap = 10;
-            const padding = 8;
-
-            const gridWidth = cols * cellWidth + (cols - 1) * gap + padding * 2;
-            const gridHeight = rows * cellHeight + (rows - 1) * gap + padding * 2;
-
-            const gridContainer = document.getElementById('bombucksGridContainer');
-            const gridBackground = document.getElementById('bombucksGridBackground');
-            const grid = document.getElementById('bombucksGrid');
-
-            gridContainer.style.width = `${gridWidth}px`;
-            gridContainer.style.height = `${gridHeight}px`;
-            gridBackground.style.width = `${gridWidth}px`;
-            gridBackground.style.height = `${gridHeight}px`;
-
-            grid.style.width = `${gridWidth}px`;
-            grid.style.height = `${gridHeight}px`;
-            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-            grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-
-            grid.innerHTML = '';
-            for (let i = 0; i < rows * cols; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'bombucks-cell';
-                const oval = document.createElement('div');
-                oval.className = 'oval';
-                cell.appendChild(oval);
-                grid.appendChild(cell);
-            }
-
-            currentStep = 0;
-        }
-
-        document.getElementById('fieldSize').addEventListener('change', () => {
-            updateBombucksGrid();
-            resetBombucks();
-        });
-
-        document.getElementById('bombucksPlay').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const playBtn = e.target;
-            playBtn.disabled = true;
-
-            const fieldSize = document.getElementById('fieldSize').value;
-            const cols = parseInt(fieldSize.split('x')[1]);
-            const rows = 3;
-            const allCells = document.querySelectorAll('.bombucks-cell');
-
-            resetBombucks();
-
-            for (let row = rows - 1; row >= 0; row--) {
-                const randomCol = Math.floor(Math.random() * cols);
-                const cellIndex = row * cols + randomCol;
-                await highlightCell(allCells, cellIndex);
-            }
-
-            playBtn.disabled = false;
-        });
-
-        async function highlightCell(allCells, cellIndex) {
-            return new Promise(resolve => {
-                const cell = allCells[cellIndex];
-                cell.classList.add('highlighted');
-                const oval = cell.querySelector('.oval');
-                oval.style.display = 'block';
-                setTimeout(resolve, 500);
+                getSignalBtn.disabled = false;
             });
         }
 
-        // Football X Logic
-        document.getElementById('kickBtn').addEventListener('click', async () => {
-            const kickBtn = document.getElementById('kickBtn');
-            const targets = document.querySelectorAll('.target');
-            const coefficients = document.querySelectorAll('.coefficient');
-            kickBtn.disabled = true;
+        // Coin Flip Logic
+        const flipBtn = document.getElementById('flipBtn');
+        if (flipBtn) {
+            flipBtn.addEventListener('click', () => {
+                const coinImage = document.getElementById('coinImage');
+                const coinflipResultLabel = document.getElementById('coinflipResultLabel');
 
-            targets.forEach(target => target.classList.remove('active'));
-            coefficients.forEach(coef => coef.classList.remove('active'));
+                if (!coinImage || !coinflipResultLabel) return;
 
-            const randomTarget = Math.floor(Math.random() * targets.length);
-            await new Promise(resolve => {
+                flipBtn.disabled = true;
+                coinImage.classList.add('flipping');
+
+                const isHeads = Math.random() < 0.5;
                 setTimeout(() => {
-                    targets[randomTarget].classList.add('active');
-                    resolve();
-                }, 500);
+                    if (isHeads) {
+                        coinImage.src = 'https://i.ibb.co/chnGm10w/image-4.png';
+                        coinflipResultLabel.textContent = 'HEADS';
+                        coinflipResultLabel.style.color = '#FFD700';
+                    } else {
+                        coinImage.src = 'https://i.ibb.co/9mh5Ryqk/image-5.png';
+                        coinflipResultLabel.textContent = 'TAILS';
+                        coinflipResultLabel.style.color = '#C0C0C0';
+                    }
+
+                    coinImage.classList.remove('flipping');
+                    flipBtn.disabled = false;
+                }, 1000);
             });
+        }
 
-            kickCount = Math.min(kickCount + 1, 5);
-            if (kickCount > 0) {
-                coefficients[kickCount - 1].classList.add('active');
-            }
+        // Lucky Jet Logic
+        const jetBtn = document.getElementById('jetBtn');
+        const luckyjetSignalCircle = document.getElementById('luckyjetSignalCircle');
+        if (jetBtn) {
+            jetBtn.addEventListener('click', () => {
+                const luckyjetSignal = document.getElementById('luckyjetSignal');
+                if (!luckyjetSignal || !luckyjetSignalCircle) return;
 
-            setTimeout(() => {
-                kickBtn.disabled = false;
-            }, 1000);
-        });
+                jetBtn.disabled = true;
+                const multiplier = (Math.random() * 10 + 1).toFixed(1);
+                luckyjetSignal.textContent = `x${multiplier}`;
+                luckyjetSignalCircle.style.display = 'flex';
 
-        // Particles Animation
+                setTimeout(() => {
+                    luckyjetSignal.textContent = '';
+                    luckyjetSignalCircle.style.display = 'none';
+                    jetBtn.disabled = false;
+                }, 1500);
+            });
+        }
+
+        // Particles Animation (Main Menu)
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 20; i++) {
+            if (!particlesContainer) return;
+
+            for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.top = `${Math.random() * 100}%`;
-                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.animationDelay = `${Math.random() * 8}s`;
+                particle.style.width = `${Math.random() * 2 + 2}px`;
+                particle.style.height = particle.style.width;
                 particlesContainer.appendChild(particle);
             }
         }
 
-        // Initialization
         createParticles();
-        updateBombucksGrid();
     </script>
 </body>
 </html>
